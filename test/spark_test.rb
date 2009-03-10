@@ -6,6 +6,6 @@ class SparkTest < Test::Unit::TestCase
   include Spark::Mixins
   
   def test_this_plugin
-    puts random_name
+    puts random_email
   end
 end

@@ -22,15 +22,18 @@ module Spark
 	  end
 	  
 	  def random_first_name
-	    random_name_from(open_name_file(rand(2) ? 'male.first' : 'female.first')).downcase.capitalize
+	    @@male_first_names ||= read_lines_from_name_file 'male.first'
+	    @@female_first_names ||= read_lines_from_name_file 'female.first'
+	    random_entry_from(rand(2) ? @@male_first_names : @@female_first_names).downcase.capitalize
     end
     
     def random_last_name
-      random_name_from(open_name_file('all.last')).downcase.capitalize
+      @@last_names ||= read_lines_from_name_file 'all.last'
+      random_entry_from(@@last_names).downcase.capitalize
     end
 
 		def random_email
-			"#{random_word}@#{['test','example'][rand(2)]}.#{['com','net','org'][rand(3)]}"
+			"#{random_first_name[0].chr}#{random_last_name}#{random_number}@#{['test','example'][rand(2)]}.#{['com','net','org'][rand(3)]}"
 		end
 		
     def sequential_number(ident) # hash of hashes, each held hash defaults to one
@@ -43,19 +46,25 @@ module Spark
     end
     
     private
-      def open_name_file(which)
-        File.open(File.join(File.split(__FILE__).first,'../data/',"dist.#{which}"))
+      def read_lines_from_name_file(which)
+        File.readlines(File.join(File.split(__FILE__).first,'../data/',"dist.#{which}")).map do |line|
+          line =~ /^(\w+)\s/; $1 
+        end
       end
       
-      def random_name_from(file)
-        # $/ = "%\n"
-        srand
-        line = file.each do |line|
-          break line if rand($.) < 1
-        end
-        line =~ /^(\w+)\s/
-        $1
+      def random_entry_from(lines)
+        lines[rand(lines.length)+1]
       end
+      
+      # def random_name_from(lines)
+      #   # $/ = "%\n"
+      #   srand
+      #   line = file.each do |line|
+      #     break line if rand($.) < 1
+      #   end
+      #   line =~ /^(\w+)\s/
+      #   $1
+      # end
       
 	end
 end
