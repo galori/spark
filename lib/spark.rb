@@ -53,7 +53,7 @@ module Spark
       end
       
       def random_entry_from(lines)
-        lines[rand(lines.length)+1]
+        lines[rand(lines.length)]
       end
       
       # def random_name_from(lines)
