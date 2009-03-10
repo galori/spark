@@ -16,6 +16,18 @@ module Spark
 		  length.downto(1) { |i| text << chars[rand(chars.length - 1)].chr }
 		  text
 		end
+		
+		def random_name
+		  "#{random_first_name} #{random_last_name}"
+	  end
+	  
+	  def random_first_name
+	    random_name_from(open_name_file(rand(2) ? 'male.first' : 'female.first')).downcase.capitalize
+    end
+    
+    def random_last_name
+      random_name_from(open_name_file('all.last')).downcase.capitalize
+    end
 
 		def random_email
 			"#{random_word}@#{['test','example'][rand(2)]}.#{['com','net','org'][rand(3)]}"
@@ -29,5 +41,21 @@ module Spark
     def random_number
       rand(32767)+1
     end
+    
+    private
+      def open_name_file(which)
+        File.open(File.join(File.split(__FILE__).first,'../data/',"dist.#{which}"))
+      end
+      
+      def random_name_from(file)
+        # $/ = "%\n"
+        srand
+        line = file.each do |line|
+          break line if rand($.) < 1
+        end
+        line =~ /^(\w+)\s/
+        $1
+      end
+      
 	end
 end

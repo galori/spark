@@ -1,8 +1,11 @@
 require 'test/unit'
+require '../lib/spark'
 
-class ArsenalTest < Test::Unit::TestCase
-  # Replace this with your real tests.
+class SparkTest < Test::Unit::TestCase
+  
+  include Spark::Mixins
+  
   def test_this_plugin
-    flunk
+    puts random_name
   end
 end
