@@ -22,6 +22,6 @@ namespace :spark do
 	desc 'Runs all spark scripts in db/spark/RAILS_ENV/scripts'
 	task :scripts => [:environment,'db:reset'] do
 		include Spark::Mixins
-		Dir.glob(File.join(RAILS_ROOT, "db/spark/#{RAILS_ENV}", '*.{rb}')).each { |script_file| require script_file }
+		Dir.glob(File.join(RAILS_ROOT, "db/spark/#{RAILS_ENV}", '*.{rb}')).sort.each { |script_file| require script_file }
 	end
 end
